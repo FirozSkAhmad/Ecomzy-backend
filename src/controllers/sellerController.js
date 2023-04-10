@@ -14,7 +14,7 @@ async function addProduct(req, res) {
 async function myProducts(req, res) {
     try {
         const data = req.body
-        const {sellerId}=data
+        const { sellerId } = data
         const docs = await proModel.find(sellerId)
         res.status(201).send({ docs })
     }
@@ -23,4 +23,16 @@ async function myProducts(req, res) {
     }
 }
 
-module.exports = { addProduct, myProducts }
+async function deleteProduct(req, res) {
+    try {
+        const data = req.body
+        const { sellerId, productId } = data
+        const docs = await proModel.findByIdAndDelete({ _id: productId })
+        res.status(201).send({ msg: "deleted sucessfully" })
+    }
+    catch (err) {
+        return res.status(500).send({ msg: err.message })
+    }
+}
+
+module.exports = { addProduct, myProducts, deleteProduct }

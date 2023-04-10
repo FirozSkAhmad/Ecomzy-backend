@@ -39,7 +39,7 @@ async function loginUser(req, res) {
         const hashPassword = await bcrypt.compare(password, uniqueData.password)
 
         if (!hashPassword) {
-            return res.status(201).send({ msg: "incorrect password" })
+            return res.status(400).send({ msg: "incorrect password" })
         }
 
         const token = jwt.sign({ userId: uniqueData._id, name: uniqueData.fname, userType: uniqueData.usertype }, "my_key")
