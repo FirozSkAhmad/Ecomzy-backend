@@ -12,16 +12,19 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique:true
+        unique: true
     },
     password: {
         type: String,
         required: true
     },
-    usertype: {
-        type: String,
-        required: true,
-        enum:["buyer","seller"]
+    cart: {
+        type: Array,
+        default: []
+    },
+    orders: {
+        type: Array,
+        default: []
     }
 }, {
     timeStamps: true

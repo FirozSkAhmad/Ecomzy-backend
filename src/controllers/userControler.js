@@ -42,7 +42,7 @@ async function loginUser(req, res) {
             return res.status(400).send({ msg: "incorrect password" })
         }
 
-        const token = jwt.sign({ userId: uniqueData._id, name: uniqueData.fname, userType: uniqueData.usertype }, "my_key")
+        const token = jwt.sign({ userId: uniqueData._id, name: uniqueData.fname, cart: uniqueData.cart }, "my_key")
 
         return res.status(201).send({ msg: "logined successfully", token })
     }
@@ -51,4 +51,40 @@ async function loginUser(req, res) {
     }
 }
 
-module.exports = { createUser, loginUser }
+async function updateUserCart(req, res) {
+    try {
+        const data = req.body
+
+        const { userId, cartItems } = data
+
+        const updateCart = await userModel.findByIdAndUpdate({ _id: userId }, { cart: cartItems }, { new: true })
+
+        console.log(updateCart)
+
+        return res.status(201).send({ msg: "updated successfully" })
+
+    }
+    catch (err) {
+        return res.status(500).send({ msg: err.message })
+    }
+}
+
+async function updateUserOrders(req, res) {
+    try {
+        const data = req.body
+
+        const { userId, orderItems } = data
+
+        const updateOrders = await userModel.findByIdAndUpdate({ _id: userId }, { orders: [orderItems] }, { new: true })
+
+        console.log(updateOrders)
+
+        return res.status(201).send({ msg: "updated successfully" })
+
+    }
+    catch (err) {
+        return res.status(500).send({ msg: err.message })
+    }
+}
+
+module.exports = { createUser, loginUser, updateUserCart, updateUserOrders }
